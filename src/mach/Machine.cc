@@ -23,6 +23,7 @@
 #include "dev/Keyboard.h"
 #include "dev/RTC.h"
 #include "dev/Screen.h"
+#include "dev/FDC.h"
 #include "kern/AddressSpace.h"
 #include "kern/FrameManager.h"
 #include "kern/KernelHeap.h"
@@ -78,6 +79,9 @@ static PCQ<uint16_t> keycodeQueue(128);
 // static keyboard and RTC device object
 static Keyboard keyboard(keycodeQueue);
 static RTC rtc;
+
+// FDC
+static FDC fdc;
 
 // check various assumptions about data types and sizes
 static_assert(mword(true) == mword(1), "true == mword(1)");
@@ -460,11 +464,17 @@ extern "C" void isr_handler_0x0e(mword errcode, vaddr iAddr) { // page fault
 }
 
 extern "C" void isr_handler_0x20() { // PIT interrupt
+  kcout << "^";
   Processor::sendEOI();
 }
 
 extern "C" void isr_handler_0x21() { // keyboard interrupt
   keyboard.staticInterruptHandler(); // low-level processing *before* EOI
+  Processor::sendEOI();
+}
+
+extern "C" void isr_handler_0x26() { // FDC interrupt
+  fdc.staticInterruptHandler();
   Processor::sendEOI();
 }
 

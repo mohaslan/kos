@@ -1,1 +1,1 @@
-PREFIX=/usr/local/cross
+PREFIX=/media/maslan/data/tmp/kos/cross

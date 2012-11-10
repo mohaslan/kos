@@ -67,13 +67,13 @@ void idleLoop() {
 
 void mainLoop(ptr_t c) {
   Breakpoint();
-  Thread::create(task, &A);
-	Thread::create(task, &B);
-	Thread::create(task, &C);
-	Thread::create(task, &D);
-	Thread::create(task, &E);
-	Thread::create(task, &F);
-	task(c);
+  //Thread::create(task, &A);
+  //Thread::create(task, &B);
+  //Thread::create(task, &C);
+  //Thread::create(task, &D);
+  //Thread::create(task, &E);
+  //Thread::create(task, &F);
+  task(c);
 }
 
 static SpinLock lk;
@@ -81,7 +81,7 @@ static SpinLock lk;
 void task(ptr_t c) {
   for (;;) {
     lk.acquire();
-    kcout << *(char*)c << Processor::getApicID() << ' ';
+    //kcout << *(char*)c << Processor::getApicID() << ' ';
     lk.release();
     for (int i = 0; i < 2500; i += 1) Pause();
   }

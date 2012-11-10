@@ -2,10 +2,10 @@
 
 # note: use 'make info' and 'make pdf' to build GNU docs
 
-TMPDIR=/spare/tmp
-DLDIR=~mkarsten/work/kos/download
-PTDIR=~mkarsten/work/kos/patches
-PREFIX=/usr/local/cross
+TMPDIR=/media/maslan/data/tmp/kos/tmp
+DLDIR=/media/maslan/data/tmp/kos/download
+PTDIR=/media/maslan/data/tmp/kos/patches
+PREFIX=/media/maslan/data/tmp/kos/cross
 TARGET=x86_64-pc-kos
 
 BINUTILS=binutils-2.22
@@ -119,7 +119,7 @@ function build_qemu() {
 	rm -rf $TMPDIR/$QEMU && cd $TMPDIR || error "$TMPDIR access"
 	tar xjf $DLDIR/$QEMU.tar.bz2 || error "$QEMU extract"
 	rm -rf $TMPDIR/build-qemu && mkdir $TMPDIR/build-qemu && cd $TMPDIR/build-qemu || error "$TMPDIR/build-qemu access"
-	../$QEMU/configure --target-list=x86_64-softmmu || error "$QEMU configure"
+	../$QEMU/configure --target-list=x86_64-softmmu --prefix=$PREFIX/qemu || error "$QEMU configure"
 	nice -10 make -j $(fgrep processor /proc/cpuinfo|wc -l) all &&\
 		echo SUCCESS: qemu build
 }

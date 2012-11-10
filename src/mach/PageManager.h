@@ -172,7 +172,7 @@ class PageManager {
     static_assert( N >= 1 && N < pagelevels, "page level template violation" );
     KASSERT( bitaligned(vma, pagesizebits<N>()), (ptr_t)vma );
     KASSERT( (lma & ~ADDR()) == 0, (ptr_t)lma );
-    DBG::outln(DBG::Paging, "mapping: ", (ptr_t)vma, '/', (ptr_t)pagesize<N>(), " -> ", (ptr_t)lma);
+   // DBG::outln(DBG::Paging, "mapping: ", (ptr_t)vma, '/', (ptr_t)pagesize<N>(), " -> ", (ptr_t)lma);
     maprecursive<N>(vma, o);
     PageEntry* pe = getEntry<N>(vma);
     DBG::outln(DBG::Paging, ' ', pe);
@@ -186,7 +186,7 @@ class PageManager {
   static inline mword unmap( mword vma, bool strict ) {
     static_assert( N >= 1 && N < pagelevels, "page level template violation" );
     PageEntry* pe = getEntry<N>(vma);
-    DBG::outln(DBG::Paging, "unmapping ", (ptr_t)vma, '/', (ptr_t)pagesize<N>(), ": ", pe);
+   // DBG::outln(DBG::Paging, "unmapping ", (ptr_t)vma, '/', (ptr_t)pagesize<N>(), ": ", pe);
     KASSERT(!strict || pe->P, (ptr_t)vma);
     pe->P = 0;
     return pe->ADDR;
